@@ -10,22 +10,17 @@ string parsefilename(char url[])
 	return ss.str();
 }
 
-int main(int argc, char *argv[])
+int download(char *url)
 {
-	if(argc < 2 ) {
-		printf("Usage: %s <URL>\n", argv[0]);
-		return 1;
-	}
 	string command;
 	stringstream ss;
-	ss << argv[1];
+	ss << url;
 	string filename;
-	filename = parsefilename(argv[1]);
+	filename = parsefilename(url);
 	command = "wget " + ss.str();
 	command += " 1> /dev/null 2> /dev/null -O " + filename;
 	if(system(command.c_str()))
-		printf("Could not execute command\n");
+		return -1;
 	else
-		printf("Command successfully executed\n");
-	return 0;
+		return 1;
 }
