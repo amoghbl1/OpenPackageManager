@@ -1,0 +1,37 @@
+[
+	{
+	"packagename": "apm1",
+    	"conflink": "www.apm.org/apm1.conf",
+    	"version" : 1.0
+	},
+	{
+	"packagename": "apm2",
+    	"conflink": "www.apm.org/apm2.conf",
+    	"version" : 1.0
+	},
+	{
+	"packagename": "apm3",
+    	"conflink": "www.apm.org/apm3.conf",
+    	"version" : 1.0
+	},
+	{
+	"packagename": "apm4",
+    	"conflink": "www.apm.org/apm4.conf",
+    	"version" : 1.0
+	},
+	{
+	"packagename": "apm5",
+    	"conflink": "www.apm.org/apm5.conf",
+    	"version" : 1.0
+	},
+	{
+	"packagename": "apm6",
+    	"conflink": "www.apm.org/apm6.conf",
+    	"version" : 1.0
+	},
+	{
+    	"packagename": "apm7",
+    	"conflink": "www.apm.org/apm7.conf",
+    	"version" : 1.0
+	}
+]
