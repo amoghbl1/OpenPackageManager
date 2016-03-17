@@ -1,4 +1,3 @@
 
-parse:
-	g++ -std=c++11 parse.cpp -o parser
-	./parser https://raw.githubusercontent.com/kunal394/test/master/packages.list
+install:
+	g++ -std=c++11 update.cpp download.cpp install.cpp -o installer
