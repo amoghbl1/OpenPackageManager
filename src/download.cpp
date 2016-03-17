@@ -1,29 +1,26 @@
-#include <cstdio>
-#include <iostream>
-#include <string.h>
-#include <algorithm>
-#include "url2file.hpp"
+#include <bits/stdc++.h>
 
 using namespace std;
 
 string parsefilename(char url[])
 {
-	string s;
-	int i = strlen(url);
-	while(url[i--] != '/')
-		s += url[i + 1];
-	reverse(s.begin(), s.end());
-	return s;
+	char *cname = strrchr(url, '/') + 1;
+	stringstream ss;
+	ss << cname;
+	return ss.str();
 }
 
-int main(int argc, char *argv[])
+int download(char *url)
 {
-	if(argc < 2 ) {
-		printf("Usage: %s <URL>\n", argv[0]);
+	string command;
+	stringstream ss;
+	ss << url;
+	string filename;
+	filename = parsefilename(url);
+	command = "wget " + ss.str();
+	command += " 1> /dev/null 2> /dev/null -O " + filename;
+	if(system(command.c_str()))
+		return -1;
+	else
 		return 1;
-	}
-	string fname;
-	fname = parsefilename(argv[1]);
-	download(fname, argv[1]);
-	return 0;
 }
