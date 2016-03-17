@@ -20,7 +20,10 @@ int download(char *url)
 	command = "wget " + ss.str();
 	command += " 1> /dev/null 2> /dev/null -O " + filename;
 	if(system(command.c_str()))
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5d0ec88a328e33fc4532ffc6f1dcada799507302
 		return -1;
 	else
 		return 1;
