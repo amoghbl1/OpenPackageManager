@@ -1,1 +1,1 @@
-void list_pack(std::string);
+void list_pack(std::vector<std::string>);
