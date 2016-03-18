@@ -36,9 +36,7 @@
 	},
     {
     	"packagename": "opm",
-        "conflink": "https://github.com/amoghbl1/OpenPackageManager/conf/opm.conf"
-    	"version": 1.0,
-    
-    
+        "conflink": "https://github.com/amoghbl1/OpenPackageManager/conf/opm.conf",
+    	"version": 1.0    
     }
 ]
