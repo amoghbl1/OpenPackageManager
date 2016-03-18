@@ -1,7 +1,21 @@
 # Open Package Manager, for Android
 
-Android is a great operation system/platform for developers. It offers a lot of exposure to developers who are new to linux, in fact, it was the first linux operating system that I used.
-Sometimes, people new to the linux platform do not understand the power and capabilities of this platform, a simple package manager is an example of such a tool that would be very useful to people.
-Currently, the android platform only looks at Applications as package, they have this http://developer.android.com/reference/android/content/pm/PackageManager.html , which is something written in Java to manage packages.
-I want to propose a command line package manager, something like yum or apt-get that would help developers install and manage packages but these would not be entire android applications, they would be binaries that could run on ARM processors. The idea occurred to me while working on this test project http://github.com/amoghbl1/nmap-android  . Every binary that can be cross compiled to ARM is runnable on android, but right now, we’d need to cross compile binaries and ship them within
-our app as done in the nmap-android project. This implies that the maintainers have to maintain an android application as well as all their binaries, this could be a tedious task. If we succeed with this project, people would not need to write entire android applications to ship their software, they’d be able to offer the command line aspects of the application by just cross compiling the source.
+## Description
+
+The android package manager for lazy people.
+
+Every application written in C/C++ could be cross compiled to run on an android device. But this involves the tiresome process of figuring out how to actually cross compile these binaries.
+
+This project is in the hope of having a centralized repo of all such applications that could be cross compiled, but lack a full front end Android UI.
+
+## For the Dev
+
+* It is easier to maintain a binary that cross compiles to android rather than an entire android application.
+
+* Could possible help applications share binaries in the future, if adoption is high.
+
+## For the User
+
+* Makes it easier to install binaries, don't need to cross compile it yourselves.
+
+* Get your favorite cli apps on android :D
