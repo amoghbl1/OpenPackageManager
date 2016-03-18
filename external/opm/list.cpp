@@ -6,7 +6,7 @@ using namespace boost::property_tree;
 using namespace std;
 
 
-void list_pack(string pack_list)
+void list_pack(vector<string> pack_list)
 {
 
 	stringstream ss;
@@ -15,10 +15,12 @@ void list_pack(string pack_list)
 	if (jsonFile.good()){
 		ptree pt;
 		read_json(jsonFile, pt);
-
 		for(auto & package_list:pt.get_child("installed")){
 			for(auto & package:package_list.second){
-				names.push_back(package.first);
+                if (package.first == "packagename"){
+                    if (pack_list.size() == 0 || find(pack_list.begin(), pack_list.end(), package.second.get_value<string>()) != pack_list.end())
+                        names.push_back(package.second.get_value<string>());
+                }
 			}
 		}
 	}
