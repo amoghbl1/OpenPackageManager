@@ -188,7 +188,7 @@ int install(char *packname)
 		return 0;
 	}
 
-	string s = "https://raw.githubusercontent.com/amoghbl1/OpenPackageManager/master/packages.list";
+	string s = PACKAGES_LIST_URL;
 	char* s_copy = (char*)alloca(s.size() + 1);
 	memcpy(s_copy, s.c_str(), s.size() + 1);
 	update(s_copy);

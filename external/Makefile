@@ -47,7 +47,7 @@ movecurl:
 
 compile:
 	cd opm && \
-	PATH=$(NDKDEST)/bin:$(PATH) LDFLAGS=" $(LDFLAGS) -I../includes/libcurl.a" $(PREFIXT)-g++ --sysroot=$(NDKDEST)/sysroot -I../includes/ -L../includes/ -pie -fPIE -fpermissive -std=c++11 -o ../bins/opm update.cpp download.cpp install.cpp list.cpp opm.cpp -lcurl -lz && \
+	PATH=$(NDKDEST)/bin:$(PATH) LDFLAGS=" $(LDFLAGS) -I../includes/libcurl.a" $(PREFIXT)-g++ --sysroot=$(NDKDEST)/sysroot -I../includes/ -L../includes/ -pie -fPIE -fpermissive -std=c++11 -o ../bins/opm update.cpp download.cpp install.cpp list.cpp opm.cpp search.cpp -lcurl -lz && \
 	PATH=$(NDKDEST)/bin:$(PATH) $(PREFIXT)-strip ../bins/opm
 
 test:

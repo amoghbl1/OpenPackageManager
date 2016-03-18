@@ -2,6 +2,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include "update.hpp"
+#include "paths.hpp"
 
 using namespace boost::property_tree;
 using namespace std;
@@ -10,13 +11,15 @@ using namespace std;
 void search_pack(vector<string> pack_list)
 {
 	//update the packages.list file
-	string s = "https://raw.githubusercontent.com/amoghbl1/OpenPackageManager/master/packages.list";
+	string s = PACKAGES_LIST_URL;
 	char* s_copy = (char*)alloca(s.size() + 1);
 	memcpy(s_copy, s.c_str(), s.size() + 1);
 	update(s_copy);
 
 	stringstream ss;
-	ifstream jsonFile("./packages.list");
+    string packageslist = APP_BIN_PATH;
+    packageslist += "packages.list";
+	ifstream jsonFile(packageslist);
 	vector<string> names;
 	if (jsonFile.good()){
 		ptree pt;
