@@ -175,7 +175,7 @@ int install_package_and_update(string fname)
 
 int install(char *packname)
 {
-	// #TODO if installed.list not there, skip this
+	// #TODO: Name the package in installed file correctly
 	if(check_installed(packname))
 	{	
 		printf("Package already installed\n");
