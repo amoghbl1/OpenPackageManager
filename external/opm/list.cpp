@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include "paths.hpp"
 
 using namespace boost::property_tree;
 using namespace std;
@@ -10,7 +11,9 @@ void list_pack(vector<string> pack_list)
 {
 
 	stringstream ss;
-	ifstream jsonFile("./installed.list");
+    string installedlist = APP_BIN_PATH;
+    installedlist += "installed.list";
+	ifstream jsonFile(installedlist);
 	vector<string> names;
 	if (jsonFile.good()){
 		ptree pt;

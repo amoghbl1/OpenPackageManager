@@ -1,2 +1,2 @@
-int download(char *url);
+int download(char *url, std::string);
 std::string parsefilename(char *);

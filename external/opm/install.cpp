@@ -158,7 +158,7 @@ int install_package_and_update(string fname)
 			b_link = s;
 			char* s_copy = (char*)alloca(s.size() + 1);
 			memcpy(s_copy, s.c_str(), s.size() + 1);
-			ret = download(s_copy);
+			ret = download(s_copy, APP_PACKAGES_PATH);
 
 		}
 		else if (package.first == "version")
