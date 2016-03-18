@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,8 +93,8 @@ public class Home extends ActionBarActivity {
 
         @Override
         protected void onPreExecute() {
-            this.progressDialog.setTitle("NMAP");
-            this.progressDialog.setMessage("Scanning...");
+            this.progressDialog.setTitle("OPM");
+            this.progressDialog.setMessage("Running command.");
             this.progressDialog.setCancelable(false);
             this.progressDialog.show();
             return;
@@ -101,13 +102,14 @@ public class Home extends ActionBarActivity {
         @Override
         protected Void doInBackground(String... params) {
             try {
-                Log.d(DEBUG_TAG, "Running" + params[0]);
-                this.returnOutput = CommandRunner.execCommand(params[0], Home.oldBinHome.getAbsoluteFile());
+                Log.d(DEBUG_TAG, "Running " + params[0]);
+                if(!params[0].equals(""))
+                    this.returnOutput = CommandRunner.execCommand(params[0], Home.oldBinHome.getAbsoluteFile());
             } catch (IOException e) {
-                this.returnOutput = "IOException while trying to scan!";
+                this.returnOutput = "IOException while running command";
                 Log.d(DEBUG_TAG, e.getMessage());
             } catch (InterruptedException e) {
-                this.returnOutput = "Nmap Scan Interrupted!";
+                this.returnOutput = "Command Interrupted!";
                 Log.d(DEBUG_TAG, e.getMessage());
             }
 
