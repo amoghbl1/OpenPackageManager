@@ -19,7 +19,7 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) {
 	return written;
 }
 
-int download(char *url)
+int download(char *url, string path)
 {
 	CURL *curl;
 	FILE *outfile;
@@ -29,6 +29,9 @@ int download(char *url)
 	//	ss << url;
 	string outfilename;
 	outfilename = parsefilename(url);
+    
+    // Changing from just file name to the path where this needs to be stored
+    outfilename = path + outfilename;
 	char outfilenamechararr[FILENAME_MAX_LENGTH];
 	strncpy(outfilenamechararr, outfilename.c_str(), sizeof(outfilenamechararr));
 	outfilenamechararr[sizeof(outfilenamechararr) - 1] = 0;
@@ -47,5 +50,5 @@ int download(char *url)
 	ifstream f(outfilenamechararr);
 	if (f.good())
 		return 1;
-	return 1;
+	return -1;
 }

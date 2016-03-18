@@ -47,14 +47,19 @@ movecurl:
 
 compile:
 	cd opm && \
-	PATH=$(NDKDEST)/bin:$(PATH) LDFLAGS=" $(LDFLAGS) -I../includes/libcurl.a" $(PREFIXT)-g++ --sysroot=$(NDKDEST)/sysroot -I../includes/ -L../includes/ -pie -fPIE -fpermissive -std=c++11 -o installer update.cpp download.cpp install.cpp -lcurl -lz && \
-	PATH=$(NDKDEST)/bin:$(PATH) $(PREFIXT)-strip installer
+	PATH=$(NDKDEST)/bin:$(PATH) LDFLAGS=" $(LDFLAGS) -I../includes/libcurl.a" $(PREFIXT)-g++ --sysroot=$(NDKDEST)/sysroot -I../includes/ -L../includes/ -pie -fPIE -fpermissive -std=c++11 -o ../bins/opm update.cpp download.cpp install.cpp list.cpp opm.cpp -lcurl -lz && \
+	PATH=$(NDKDEST)/bin:$(PATH) $(PREFIXT)-strip ../bins/opm
+
+test:
+	cd opm && \
+    PATH=$(NDKDEST)/bin:$(PATH) LDFLAGS=" $(LDFLAGS) -I../includes/libcurl.a" $(PREFIXT)-g++ --sysroot=$(NDKDEST)/sysroot -I../includes/ -L../includes/ -pie -fPIE -fpermissive -std=c++11 -o test test.cpp -lcurl -lz && \
+    PATH=$(NDKDEST)/bin:$(PATH) $(PREFIXT)-strip test
 
 clean:
 	rm -rf $(NDKDEST)
 
 export:
-	mkdir -p bins
+	cp bins/* ../android_project/OpenPackageManager/app/src/main/res/raw
 
 showsetup:
 	@echo "Current environment"

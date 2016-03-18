@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include "update.hpp"
 #include "download.hpp"
+#include "paths.hpp"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
@@ -207,7 +208,7 @@ int install(char *packname)
 	conf_fname = parsefilename(s_copy);
 	cout << "conf name: " << conf_fname << endl;
 
-	if(download(s_copy) == -1)
+	if(download(s_copy, APP_BIN_PATH) == -1)
 	{
 		rm(conf_fname);
 		printf("Conf file could not be downloaded. Installation failed\n");

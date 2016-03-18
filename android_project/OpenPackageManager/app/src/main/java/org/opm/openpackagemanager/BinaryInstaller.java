@@ -28,32 +28,24 @@ public class BinaryInstaller {
     public boolean installResources() {
         InputStream inputStream;
         File outFile;
-        File appBinHome = context.getExternalFilesDir(null);
-        File oldAppBin = context.getDir("bin", Context.MODE_MULTI_PROCESS);
+        File appBinHome = context.getDir("bin", Context.MODE_MULTI_PROCESS);
         Resources resources = context.getResources();
 
         try {
             // Delete the file before we write anything there
             CommandRunner.execCommand("rm -rf ./", appBinHome);
 
-            inputStream = resources.openRawResource(R.raw.nmap);
-            outFile = new File(appBinHome, "nmap");
+            inputStream = resources.openRawResource(R.raw.opm);
+            outFile = new File(appBinHome, "opm");
             moveBinaryRawResourceToFile(inputStream, outFile);
 
-            inputStream = resources.openRawResource(R.raw.busybox);
-            outFile = new File(oldAppBin, "busybox");
-            moveBinaryRawResourceToFile(inputStream, outFile);
-
-            String []binaries = {"nmap", "busybox"};
+            String []binaries = {"opm"};
             String output;
 
             // Changing all the permissions of the files in the app_bin folder
             for(int i=0; i<binaries.length ; i++) {
-                output = CommandRunner.execCommand("chmod 6755 ./" + binaries[i], oldAppBin.getAbsoluteFile());
+                output = CommandRunner.execCommand("chmod 6755 ./" + binaries[i], appBinHome.getAbsoluteFile());
                 Log.d(DEBUG_TAG, "App Bin Home "+appBinHome.getAbsolutePath());
-                Log.d(DEBUG_TAG, "Old Bin Home "+oldAppBin.getAbsolutePath());
-                output = CommandRunner.execCommand("ln -s " + oldAppBin.getAbsolutePath() + "/" + binaries[i] + " " + appBinHome.getAbsolutePath() + "/newNmap", oldAppBin.getAbsoluteFile());
-                Log.d(DEBUG_TAG, "New output: " + output);
                 Log.d(DEBUG_TAG, "chmod output: " + CommandRunner.execCommand("ls -la ./" + binaries[i], appBinHome.getAbsoluteFile()));
             }
         }
