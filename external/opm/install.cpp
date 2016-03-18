@@ -21,7 +21,9 @@ void rm(string fname)
 vector<string> list(){
 
     stringstream ss;
-    ifstream jsonFile("../../installed.list");
+    string installedlist = APP_BIN_PATH;
+    installedlist += "installed.list";
+    ifstream jsonFile(installedlist);
     vector<string> names;
     if (jsonFile.good()){
         ptree pt;
@@ -42,7 +44,9 @@ bool check_installed(char *pname)
 
 	stringstream ss;
 	ss << pname;
-	ifstream jsonFile("./installed.list");
+    string installedlist = APP_BIN_PATH;
+    installedlist += "installed.list";
+	ifstream jsonFile(installedlist);
 	if (jsonFile.good()){
 		ptree pt;
 		try
@@ -70,8 +74,9 @@ bool check_installed(char *pname)
 void update_local(string pname, string binlink, string version)
 {
 
-
-	ifstream jsonFile("./installed.list");
+    string installedlist = APP_BIN_PATH;
+    installedlist += "installed.list";
+	ifstream jsonFile(installedlist);
 	ptree pt, mpt, npt;
 	if (jsonFile.good()){
 		read_json(jsonFile, pt);
@@ -98,7 +103,7 @@ void update_local(string pname, string binlink, string version)
 	new_package.put("version", version);
 	mpt.push_back(make_pair("", new_package));
 	npt.add_child("installed", mpt);
-	write_json("./installed.list", npt);
+	write_json(installedlist, npt);
 }
 
 string fetchconfurl(char *pname)
