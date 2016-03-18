@@ -1,0 +1,3 @@
+[submodule "external/Boost-for-Android"]
+	path = external/Boost-for-Android
+	url = https://github.com/amoghbl1/Boost-for-Android.git
