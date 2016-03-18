@@ -27,6 +27,17 @@ buildboost:
 moveboost:
 	cd Boost-for-Android && cp -r build/include/boost-1_53/boost/ ../includes/boost/
 
+buildcurl:
+	cd curl && \
+	PATH=$(NDKDEST)/bin:$(PATH) ./configure --host=arm-linux-androideabi && \
+	PATH=$(NDKDEST)/bin:$(PATH) make
+
+movecurl:
+	rm -rf include/curl
+	cd curl && cp -r include/curl/ ../includes/
+	cd includes/curl && sed -i "s/define CURL_SIZEOF_LONG           8/define CURL_SIZEOF_LONG           4/g" curlbuild.h.dist
+	@echo "Fixing sizeof problem"
+
 #configure:
 #	cd opm && PATH=$(NDKDEST)/bin:$(PATH) LUA_CFLAGS="-DLUA_USE_POSIX" LDFLAGS="-static" \
 #	ac_cv_linux_vers=2 CC=$(PREFIXT)-gcc CXX=$(PREFIXT)-g++ LD=$(PREFIXT)-ld RANLIB=$(PREFIXT)-ranlib AR=$(PREFIXT)-ar STRIP=$(PREFIXT)-strip \
@@ -34,7 +45,7 @@ moveboost:
 
 compile:
 	cd opm && \
-	PATH=$(NDKDEST)/bin:$(PATH) $(PREFIXT)-g++ -I../includes/ -pie -fPIE -fpermissive -std=c++11 update.cpp download.cpp install.cpp -o installer && \
+	PATH=$(NDKDEST)/bin:$(PATH) $(PREFIXT)-g++ -I../includes/ -pie -fPIE -fpermissive  -std=c++11 update.cpp download.cpp install.cpp -o installer && \
 	PATH=$(NDKDEST)/bin:$(PATH) $(PREFIXT)-strip installer
 
 clean:

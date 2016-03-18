@@ -1,3 +1,6 @@
 [submodule "external/Boost-for-Android"]
 	path = external/Boost-for-Android
 	url = https://github.com/amoghbl1/Boost-for-Android.git
+[submodule "external/curl"]
+	path = external/curl
+	url = https://github.com/curl/curl.git

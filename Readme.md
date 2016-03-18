@@ -1,4 +1,4 @@
-# Android Package Manager
+# Open Package Manager, for Android
 
 Android is a great operation system/platform for developers. It offers a lot of exposure to developers who are new to linux, in fact, it was the first linux operating system that I used.
 Sometimes, people new to the linux platform do not understand the power and capabilities of this platform, a simple package manager is an example of such a tool that would be very useful to people.
