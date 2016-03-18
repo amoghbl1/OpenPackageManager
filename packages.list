@@ -33,5 +33,12 @@
     	"packagename": "apm7",
     	"conflink": "www.apm.org/apm7.conf",
     	"version" : 1.0
-	}
+	},
+    {
+    	"packagename": "opm",
+        "conflink": "https://github.com/amoghbl1/OpenPackageManager/conf/opm.conf"
+    	"version": 1.0,
+    
+    
+    }
 ]
