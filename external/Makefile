@@ -8,15 +8,16 @@ PREFIXT?="arm-linux-androideabi"
 # edit line below if you have NDK to reflect the path where NDK is installed
 NDK := $(NDK_BASE)
 NDKDEST=/tmp/ndk-$(HOSTARCH)
-NDKPLATFORM?=android-9
+NDKPLATFORM?=android-19
 BUILDSYSTEM=linux-x86_64
 NDKBOOST=/home/amoghbl1/apps/android_ndk/android-ndk-r10/
+LDFLAGS ="-llog"
 
 all: | maketoolchain build export
 	@echo Built Successfully 
 
 maketoolchain:
-	bash $(NDK)/build/tools/make-standalone-toolchain.sh --platform=$(NDKPLATFORM) --install-dir=$(NDKDEST) --arch=$(HOSTARCH) --system=$(BUILDSYSTEM)
+	bash $(NDKBOOST)/build/tools/make-standalone-toolchain.sh --platform=$(NDKPLATFORM) --install-dir=$(NDKDEST) --arch=$(HOSTARCH) --system=$(BUILDSYSTEM)
 
 build: | buildboost moveboost configure compile
 	@echo "Type 'build' successfuly built"
@@ -25,15 +26,16 @@ buildboost:
 	cd Boost-for-Android && ./build-android.sh $(NDKBOOST) 
 
 moveboost:
+	rm -rf includes/curl
 	cd Boost-for-Android && cp -r build/include/boost-1_53/boost/ ../includes/boost/
 
 buildcurl:
 	cd curl && \
-	PATH=$(NDKDEST)/bin:$(PATH) ./configure --host=arm-linux-androideabi && \
+	PATH=$(NDKDEST)/bin:$(PATH) ./configure --host=arm-linux-androideabi --disable-shared  && \
 	PATH=$(NDKDEST)/bin:$(PATH) make
 
 movecurl:
-	rm -rf include/curl
+	rm -rf includes/curl
 	cd curl && cp -r include/curl/ ../includes/
 	cd includes/curl && sed -i "s/define CURL_SIZEOF_LONG           8/define CURL_SIZEOF_LONG           4/g" curlbuild.h.dist
 	@echo "Fixing sizeof problem"
@@ -45,7 +47,7 @@ movecurl:
 
 compile:
 	cd opm && \
-	PATH=$(NDKDEST)/bin:$(PATH) $(PREFIXT)-g++ -I../includes/ -pie -fPIE -fpermissive  -std=c++11 update.cpp download.cpp install.cpp -o installer && \
+	PATH=$(NDKDEST)/bin:$(PATH) LDFLAGS=" $(LDFLAGS) -I../includes/libcurl.a" $(PREFIXT)-g++ --sysroot=$(NDKDEST)/sysroot -I../includes/ -L../includes/ -pie -fPIE -fpermissive -std=c++11 -o installer update.cpp download.cpp install.cpp -lcurl -lz && \
 	PATH=$(NDKDEST)/bin:$(PATH) $(PREFIXT)-strip installer
 
 clean:
