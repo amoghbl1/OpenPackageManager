@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
 #include "install.hpp"
 #include "list.hpp"
+#include "search.hpp"
 
 using namespace std;
 
@@ -128,7 +129,24 @@ int main(int argc, char *argv[])
 			suggest();
 			_search_help(true);
 		}
-		//search(argv[2]);
+		vector <string> packs;
+		if(argc == 3)
+		{
+			string arg(argv[2]);
+			if(!arg.compare("all"))
+				packs.clear();
+			else
+				packs.push_back(arg);
+		}
+		else
+		{
+			for(int i = 2; i < argc; i++)
+			{
+				string arg(argv[i]);
+				packs.push_back(arg);
+			}
+		}
+		search_pack(packs);
 	}
 	else if((!comm.compare("-h")) || (!comm.compare("--help")))
 		help(1);
