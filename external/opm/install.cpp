@@ -103,6 +103,8 @@ int main(int argc, char *argv[])
 	//install package
 	/*if(install_package(conf_fname) == -1)
 	{
+		string command = "rm " + conf_fname;
+		system(command.c_str());
 		printf("Package installation failed\n");
 		return 0;
 	}*/
