@@ -9,23 +9,79 @@ using namespace std;
 
 bool check_installed(char *pname)
 {
-	stringstream ss;
-	ss << pname;
-	ifstream jsonFile("../../installed.list");
-	ptree pt;
-	read_json(jsonFile, pt);
+	
+    stringstream ss;
+    ss << pname;
+    ifstream jsonFile("../../installed.list");
+    if (jsonFile.good()){
+        ptree pt;
+        read_json(jsonFile, pt);
 
-	for(auto & package_list:pt){
-		for(auto & package:package_list.second){
-			if (package.second.get_value<string>() == ss.str()){
-				return true;
-			}
-		}
-	}
+        for(auto & package_list:pt.get_child("installed")){
+            for(auto & package:package_list.second){
+                if (package.second.get_value<string>() == ss.str()){
+                    return true;
+                }
+            }
+        }
+    }
 	return false;
 }
 
+vector<string> list(){
+
+    stringstream ss;
+    ifstream jsonFile("../../installed.list");
+    vector<string> names;
+    if (jsonFile.good()){
+        ptree pt;
+        read_json(jsonFile, pt);
+
+        for(auto & package_list:pt.get_child("installed")){
+            for(auto & package:package_list.second){
+                names.push_back(package.first);
+            }
+        }
+    }
+    return names;
+}
+
+
 // #TODO check local repo download
+
+void update_local(string pname, string binlink, string version)
+{
+ 
+
+    ifstream jsonFile("../../installed.list");
+    ptree pt, mpt, npt;
+    if (jsonFile.good()){
+        read_json(jsonFile, pt);
+        bool cont = true;
+        for(auto & package_list:pt.get_child("installed")){
+            ptree new_package;
+            for(auto & package:package_list.second ){
+                if (package.first == ""){
+                    cont = false;
+                    break;
+                }
+                new_package.put(package.first,package.second.get_value<string>());
+            }
+            if (cont)
+                mpt.push_back(make_pair("", new_package));
+            else
+                break;
+        }
+    }
+	
+    ptree new_package;
+    new_package.put("packagename",pname);
+    new_package.put("binlink",binlink);
+    new_package.put("version",version);
+    mpt.push_back(make_pair("", new_package));
+    npt.add_child("installed", mpt);
+    write_json("../../installed.list",npt);
+}
 
 string fetchconfurl(char *pname)
 {
@@ -46,7 +102,7 @@ string fetchconfurl(char *pname)
 	}
 }
 
-int install_package(string fname)
+int install_package_and_update(string fname)
 {
     stringstream ss;
     ss << fname;
@@ -56,24 +112,30 @@ int install_package(string fname)
  //   ifstream jsonFile("../../conf/" + fname + ".conf");
     ptree pt;
     read_json(jsonFile, pt);
-	
+    int ret;
+    string b_link, p_name, version;
     for(auto & package:pt){
 		if (package.first == "binlink"){
             cout << "url" + package.second.get_value<string>();
             string s = package.second.get_value<string>();
+            b_link = s;
 	        char* s_copy = (char*)alloca(s.size() + 1);
 	        memcpy(s_copy, s.c_str(), s.size() + 1);
-            return download(s_copy);
+            ret = download(s_copy);
            
 		}
+        else if (package.first == "version")
+            version = package.second.get_value<string>();
+        else if (package.first == "packagename")
+            p_name = package.second.get_value<string>();
 	}
+    if (ret){
+        update_local(p_name, b_link, version);
+        return 1;
+    }
     return -1;
 }
 
-/*int update_local(char* pname)
-{
-	//return 1 on success, -1 otherwise
-}*/
 
 int main(int argc, char *argv[])
 {
@@ -82,14 +144,14 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	//check if installed
-	if(check_installed(argv[1]))
+    // #TODO if installed.list not there, skip this
+/*	if(check_installed(argv[1]))
 	{	
 		printf("Package already installed\n");
 		return 0;
 	}
 
-	//update the packages.list file
+*/	//update the packages.list file
 	string s = "https://raw.githubusercontent.com/amoghbl1/OpenPackageManager/master/packages.list";
     char* s_copy = (char*)alloca(s.size() + 1);
 	memcpy(s_copy, s.c_str(), s.size() + 1);
@@ -123,7 +185,7 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	if(install_package(conf_fname) == -1)
+	if(install_package_and_update(conf_fname) == -1)
 	{
 		printf("Package installation failed\n");
 		return 0;
@@ -134,7 +196,5 @@ int main(int argc, char *argv[])
 	//system(command.c_str());
 
 	//update installed.list file
-	//while(update_local(argv[1]) != 1){}
-
     return 0;
 }

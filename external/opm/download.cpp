@@ -18,7 +18,7 @@ int download(char *url)
 	ss << url;
 	string filename;
 	filename = parsefilename(url);
-	command = "./busybox wget " + ss.str();
+    command = "./busybox wget " + ss.str();
 	command += " 1> /dev/null 2>&1 -O " + filename;
 	if(system(command.c_str()))
 		return -1;
