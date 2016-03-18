@@ -22,7 +22,7 @@ bool check_installed(char *pname)
                 if (package.second.get_value<string>() == ss.str()){
                     return true;
                 }
-            }
+            }   
         }
     }
 	return false;
@@ -39,7 +39,8 @@ vector<string> list(){
 
         for(auto & package_list:pt.get_child("installed")){
             for(auto & package:package_list.second){
-                names.push_back(package.first);
+                if (package.first == "packagename")
+                names.push_back(package.second.get_value<string>());
             }
         }
     }
@@ -150,7 +151,6 @@ int main(int argc, char *argv[])
 		printf("Package already installed\n");
 		return 0;
 	}
-
 */	//update the packages.list file
 	string s = "https://raw.githubusercontent.com/amoghbl1/OpenPackageManager/master/packages.list";
     char* s_copy = (char*)alloca(s.size() + 1);
