@@ -47,5 +47,8 @@ int download(char *url)
         curl_easy_cleanup(curl);
         fclose(outfile);
     }
-    return 0;
+    ifstream f(outfilenamechararr);
+    if (f.good())
+        return 1;
+    return 1;
 }
