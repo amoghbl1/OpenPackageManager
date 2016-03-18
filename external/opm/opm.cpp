@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 #include "install.hpp"
+#include "list.hpp"
 
 using namespace std;
 
@@ -101,7 +102,7 @@ int main(int argc, char *argv[])
 			suggest();
 			_list_help(true);
 		}
-		//list(argv[2]);
+		list_pack("all");
 	}
 	else if(!comm.compare("search"))
 	{

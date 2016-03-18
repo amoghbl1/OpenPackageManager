@@ -46,26 +46,6 @@ bool check_installed(char *pname)
 	return false;
 }
 
-vector<string> list()
-{
-
-	stringstream ss;
-	ifstream jsonFile("./installed.list");
-	vector<string> names;
-	if (jsonFile.good()){
-		ptree pt;
-		read_json(jsonFile, pt);
-
-		for(auto & package_list:pt.get_child("installed")){
-			for(auto & package:package_list.second){
-				names.push_back(package.first);
-			}
-		}
-	}
-	return names;
-}
-
-
 void update_local(string pname, string binlink, string version)
 {
 
@@ -175,7 +155,7 @@ int install_package_and_update(string fname)
 
 int install(char *packname)
 {
-	// #TODO: Name the package in installed file correctly
+	// #TODO if installed.list not there, skip this
 	if(check_installed(packname))
 	{	
 		printf("Package already installed\n");
