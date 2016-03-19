@@ -48,6 +48,18 @@ public class BinaryInstaller {
                 Log.d(DEBUG_TAG, "App Bin Home "+appBinHome.getAbsolutePath());
                 Log.d(DEBUG_TAG, "chmod output: " + CommandRunner.execCommand("ls -la ./" + binaries[i], appBinHome.getAbsoluteFile()));
             }
+
+            // Fixing permissions for app_bin
+            output = CommandRunner.execCommand("chmod 6755 .", appBinHome.getAbsoluteFile());
+            Log.d(DEBUG_TAG, "Fix permission app_bin: " + output);
+
+
+            // Creating app_packages, and setting permissions
+            output = CommandRunner.execCommand("mkdir ../app_packages/", appBinHome.getAbsoluteFile());
+            Log.d(DEBUG_TAG, "Create app_packages: " + output);
+            output = CommandRunner.execCommand("chmod 6755 ../app_packages/", appBinHome.getAbsoluteFile());
+            Log.d(DEBUG_TAG, "Fix permission app_packages: " + output);
+
         }
         catch (IOException e) {
             Toast.makeText(context, "IOException!", Toast.LENGTH_LONG).show();

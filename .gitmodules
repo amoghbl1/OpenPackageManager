@@ -4,3 +4,6 @@
 [submodule "external/curl"]
 	path = external/curl
 	url = https://github.com/amoghbl1/curl.git
+[submodule "external/openssl"]
+	path = external/openssl
+	url = https://github.com/amoghbl1/openssl.git

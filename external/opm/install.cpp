@@ -89,7 +89,9 @@ string fetchconfurl(char *pname)
 {
 	stringstream ss;
 	ss << pname;
-	ifstream jsonFile("./packages.list");
+    string packageslist = APP_BIN_PATH;
+    packageslist += "packages.list";
+    ifstream jsonFile(packageslist);
 	ptree pt;
 	try
 	{
@@ -119,7 +121,7 @@ int install_package_and_update(string pacname, string fname)
 	stringstream ss;
 	ss << fname;
 
-	ifstream jsonFile("./" + fname);
+	ifstream jsonFile(fname);
 
 	ptree pt;
 	try
@@ -195,7 +197,7 @@ int install(char *packname)
 	conf_fname = parsefilename(s_copy);
 	cout << "conf name: " << conf_fname << endl;
 
-	string abspath = (string)APP_BIN_PATH;
+	string abspath = APP_BIN_PATH;
 	abspath += conf_fname;
 	if(download(s_copy, abspath) == -1)
 	{
@@ -206,7 +208,7 @@ int install(char *packname)
 
 	if(install_package_and_update(pacname, abspath) == -1)
 	{
-		rm(abspath);
+		// rm(abspath);
 		printf("Package installation failed\n");
 		exit(0);
 	}

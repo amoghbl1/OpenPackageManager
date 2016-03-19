@@ -30,6 +30,7 @@ public class Home extends ActionBarActivity {
     public static File appBinHome, oldBinHome;
 
     public static TextView scanResult = null;
+    public static SharedPreferences mySharedPreferences = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +40,10 @@ public class Home extends ActionBarActivity {
         appBinHome = getExternalFilesDir(null);
         oldBinHome = getDir("bin", Context.MODE_MULTI_PROCESS);
 
-        SharedPreferences mySharedPreferences = getSharedPreferences(DEFAULT_SHARED_PREFERENCES, MODE_MULTI_PROCESS);
+        mySharedPreferences = getSharedPreferences(DEFAULT_SHARED_PREFERENCES, MODE_MULTI_PROCESS);
         firstInstall = mySharedPreferences.getBoolean(firstStartPref, true);
         if(true) {
-            BinaryInstaller installer = new BinaryInstaller(getApplicationContext());
-            installer.installResources();
-            Log.d(DEBUG_TAG, "Installing binaries");
-            // TODO: Write some test code to see if the binaries are placed correctly and have the right permissions!
-            mySharedPreferences.edit().putBoolean(firstStartPref, false).commit();
+            new AsyncBinaryInstaller().execute();
         }
         Button scan = (Button)findViewById(R.id.scan_BT);
         final EditText flags = (EditText)findViewById(R.id.flags_ET);
@@ -84,6 +81,36 @@ public class Home extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public class AsyncBinaryInstaller extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog progressDialog = new ProgressDialog(Home.this);
+
+
+        @Override
+        protected void onPreExecute() {
+            this.progressDialog.setTitle("Open Package Manager");
+            this.progressDialog.setMessage("First Install, bootstrapping...");
+            this.progressDialog.setCancelable(false);
+            this.progressDialog.show();
+            return;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            BinaryInstaller installer = new BinaryInstaller(getApplicationContext());
+            installer.installResources();
+            Log.d(DEBUG_TAG, "Installing binaries");
+            // TODO: Write some test code to see if the binaries are placed correctly and have the right permissions!
+            Home.mySharedPreferences.edit().putBoolean(firstStartPref, false).commit();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            if(this.progressDialog.isShowing())
+                this.progressDialog.dismiss();
+        }
     }
 
     public class AsyncCommandExecutor extends AsyncTask<String, Void, Void> {
