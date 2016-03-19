@@ -1,7 +1,7 @@
 [
 	{
 	"packagename": "apm1",
-        "conflink": "https://raw.githubusercontent.com/amoghbl1/OpenPackageManager/master/conf/opm.conf",
+        "conflink": "https://raw.githubusercontent.com/amoghbl1/OpenPackageManager/master/conf/apm1.conf",
     	"version" : 1.0
 	},
 	{
