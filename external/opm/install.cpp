@@ -182,7 +182,7 @@ int install(char *packname)
 	if(confurl.compare("0") == 0)
 	{
 		printf("Could not locate requested package. Installation failed\n");
-		return 0;
+		exit(0);
 	}
 	cout << "conflink: " << confurl << endl;
 
@@ -201,11 +201,15 @@ int install(char *packname)
 	{
 		rm(abspath);
 		printf("Conf file could not be downloaded. Installation failed\n");
-		return 0;
+		exit(0);
 	}
 
 	if(install_package_and_update(pacname, abspath) == -1)
+	{
+		rm(abspath);
 		printf("Package installation failed\n");
+		exit(0);
+	}
 
 	//remove conf file
 	rm(abspath);
