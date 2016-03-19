@@ -2,6 +2,7 @@
 #include "install.hpp"
 #include "list.hpp"
 #include "search.hpp"
+#include "remove.hpp"
 
 using namespace std;
 
@@ -85,7 +86,7 @@ int main(int argc, char *argv[])
 			suggest();
 			_remove_help(true);
 		}
-		//remove(argv[2]);
+		remove(argv[2]);
 	}
 	else if(!comm.compare("upgrade"))
 	{
