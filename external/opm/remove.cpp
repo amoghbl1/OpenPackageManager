@@ -6,12 +6,14 @@
 using namespace std;
 using namespace boost::property_tree;
 
-void remove(char* pname){
+void remove_pack(char* pname){
     stringstream ss;
     ss << pname;
     string del_path = APP_BIN_PATH + ss.str();
+	char* s_copy = (char*)alloca(del_path.size() + 1);
+	memcpy(s_copy, del_path.c_str(), del_path.size() + 1);
 
-    if (check_installed(del_path)){
+    if (check_installed(pname)){
         rm(del_path); 
         string installedlist = APP_BIN_PATH;
         installedlist += "installed.list";

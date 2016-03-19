@@ -1,1 +1,1 @@
-void remove(char*);
+void remove_pack(char*);

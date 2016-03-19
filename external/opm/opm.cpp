@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 			suggest();
 			_remove_help(true);
 		}
-		remove(argv[2]);
+		remove_pack(argv[2]);
 	}
 	else if(!comm.compare("upgrade"))
 	{
