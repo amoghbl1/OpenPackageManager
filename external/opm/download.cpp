@@ -24,16 +24,8 @@ int download(char *url, string path)
 	CURL *curl;
 	FILE *outfile;
 	CURLcode res;
-	string command;
-	//	stringstream ss;
-	//	ss << url;
-	string outfilename;
-	outfilename = parsefilename(url);
-    
-    // Changing from just file name to the path where this needs to be stored
-    outfilename = path + outfilename;
 	char outfilenamechararr[FILENAME_MAX_LENGTH];
-	strncpy(outfilenamechararr, outfilename.c_str(), sizeof(outfilenamechararr));
+	strncpy(outfilenamechararr, path.c_str(), sizeof(outfilenamechararr));
 	outfilenamechararr[sizeof(outfilenamechararr) - 1] = 0;
 
 	curl = curl_easy_init();

@@ -18,27 +18,6 @@ void rm(string fname)
 	
 }
 
-vector<string> list(){
-
-    stringstream ss;
-    string installedlist = APP_BIN_PATH;
-    installedlist += "installed.list";
-    ifstream jsonFile(installedlist);
-    vector<string> names;
-    if (jsonFile.good()){
-        ptree pt;
-        read_json(jsonFile, pt);
-
-        for(auto & package_list:pt.get_child("installed")){
-            for(auto & package:package_list.second){
-                if (package.first == "packagename")
-                names.push_back(package.second.get_value<string>());
-            }
-        }
-    }
-    return names;
-}
-
 bool check_installed(char *pname)
 {
 
@@ -135,7 +114,7 @@ string fetchconfurl(char *pname)
 	return "0";
 }
 
-int install_package_and_update(string fname)
+int install_package_and_update(string pacname, string fname)
 {
 	stringstream ss;
 	ss << fname;
@@ -163,7 +142,9 @@ int install_package_and_update(string fname)
 			b_link = s;
 			char* s_copy = (char*)alloca(s.size() + 1);
 			memcpy(s_copy, s.c_str(), s.size() + 1);
-			ret = download(s_copy, APP_PACKAGES_PATH);
+			string s1 = (string)APP_PACKAGES_PATH;
+			s1 += pacname;
+			ret = download(s_copy, s1);
 
 		}
 		else if (package.first == "version")
@@ -181,6 +162,7 @@ int install_package_and_update(string fname)
 
 int install(char *packname)
 {
+	string pacname(packname);
 	// #TODO if installed.list not there, skip this
 	if(check_installed(packname))
 	{	
@@ -213,14 +195,16 @@ int install(char *packname)
 	conf_fname = parsefilename(s_copy);
 	cout << "conf name: " << conf_fname << endl;
 
-	if(download(s_copy, APP_BIN_PATH) == -1)
+	string abspath = (string)APP_BIN_PATH;
+	abspath += conf_fname;
+	if(download(s_copy, abspath) == -1)
 	{
 		rm(conf_fname);
 		printf("Conf file could not be downloaded. Installation failed\n");
 		return 0;
 	}
 
-	if(install_package_and_update(conf_fname) == -1)
+	if(install_package_and_update(pacname, conf_fname) == -1)
 		printf("Package installation failed\n");
 
 	//remove conf file
