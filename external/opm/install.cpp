@@ -137,7 +137,7 @@ int install_package_and_update(string pacname, string fname)
 	string b_link, p_name, version;
 	for(auto & package:pt){
 		if (package.first == "binlink"){
-			cout << "url" + package.second.get_value<string>() << endl;
+			cout << "binurl: " + package.second.get_value<string>() << endl;
 			string s = package.second.get_value<string>();
 			b_link = s;
 			char* s_copy = (char*)alloca(s.size() + 1);
@@ -199,16 +199,16 @@ int install(char *packname)
 	abspath += conf_fname;
 	if(download(s_copy, abspath) == -1)
 	{
-		rm(conf_fname);
+		rm(abspath);
 		printf("Conf file could not be downloaded. Installation failed\n");
 		return 0;
 	}
 
-	if(install_package_and_update(pacname, conf_fname) == -1)
+	if(install_package_and_update(pacname, abspath) == -1)
 		printf("Package installation failed\n");
 
 	//remove conf file
-	rm(conf_fname);
+	rm(abspath);
 
 	return 0;
 }
