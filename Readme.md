@@ -18,4 +18,4 @@ This project is in the hope of having a centralized repo of all such application
 
 * Makes it easier to install binaries, don't need to cross compile it yourselves.
 
-* Get your favorite cli apps on android :D
+* Get your favorite cli tools on android :D
