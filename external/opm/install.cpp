@@ -83,6 +83,10 @@ void update_local(string pname, string binlink, string version)
 	mpt.push_back(make_pair("", new_package));
 	npt.add_child("installed", mpt);
 	write_json(installedlist, npt);
+    string execcommand = "chmod 755 ";
+    execcommand += installedlist;
+    // This comes from download.hpp
+    exec(execcommand.c_str());
 }
 
 string fetchconfurl(char *pname)
