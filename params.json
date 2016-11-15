@@ -1,6 +1,6 @@
 {
   "name": "OpenPackageManager",
-  "tagline": "The repository for our B.Tech Project. Open Package Manager, for Android.",
+  "tagline": "Our B.Tech Project. Open Package Manager, for Android.",
   "body": "# Open Package Manager, for Android\r\n\r\n## Description\r\n\r\nThe android package manager for lazy people.\r\n\r\nEvery application written in C/C++ could be cross compiled to run on an android device. But this involves the tiresome process of figuring out how to actually cross compile these binaries.\r\n\r\nThis project is in the hope of having a centralized repo of all such applications that could be cross compiled, but lack a full front end Android UI.\r\n\r\n## For the Dev\r\n\r\n* It is easier to maintain a binary that cross compiles to android rather than an entire android application.\r\n\r\n* Could possible help applications share binaries in the future, if adoption is high.\r\n\r\n## For the User\r\n\r\n* Makes it easier to install binaries, don't need to cross compile it yourselves.\r\n\r\n* Get your favorite cli tools on android :D\r\n",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
