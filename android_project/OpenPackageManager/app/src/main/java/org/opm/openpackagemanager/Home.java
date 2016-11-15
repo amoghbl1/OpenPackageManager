@@ -1,26 +1,28 @@
 package org.opm.openpackagemanager;
 
+
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.Menu;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
 
+import static android.content.Context.MODE_MULTI_PROCESS;
 
-public class Home extends ActionBarActivity {
+
+public class Home extends Fragment {
 
     String DEBUG_TAG = "myTag";
 
@@ -33,21 +35,27 @@ public class Home extends ActionBarActivity {
     public static SharedPreferences mySharedPreferences = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
         boolean firstInstall = true;
-        appBinHome = getExternalFilesDir(null);
-        oldBinHome = getDir("bin", Context.MODE_MULTI_PROCESS);
+        appBinHome = getActivity().getExternalFilesDir(null);
+        oldBinHome = getActivity().getDir("bin", MODE_MULTI_PROCESS);
 
-        mySharedPreferences = getSharedPreferences(DEFAULT_SHARED_PREFERENCES, MODE_MULTI_PROCESS);
+        mySharedPreferences = getActivity().getSharedPreferences(DEFAULT_SHARED_PREFERENCES, MODE_MULTI_PROCESS);
         firstInstall = mySharedPreferences.getBoolean(firstStartPref, true);
         if(true) {
             new AsyncBinaryInstaller().execute();
         }
-        Button scan = (Button)findViewById(R.id.scan_BT);
-        final EditText flags = (EditText)findViewById(R.id.flags_ET);
-        scanResult = (TextView)findViewById(R.id.scan_output_TV);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View inflated = inflater.inflate(R.layout.activity_home, container, false);
+        Button scan = (Button)inflated.findViewById(R.id.scan_BT);
+        final EditText flags = (EditText)inflated.findViewById(R.id.flags_ET);
+        scanResult = (TextView)inflated.findViewById(R.id.scan_output_TV);
 
         scanResult.setMovementMethod(new ScrollingMovementMethod());
 
@@ -59,14 +67,8 @@ public class Home extends ActionBarActivity {
             }
         });
 
-    }
+        return inflated;
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
     }
 
     @Override
@@ -84,21 +86,21 @@ public class Home extends ActionBarActivity {
     }
 
     public class AsyncBinaryInstaller extends AsyncTask<Void, Void, Void> {
-        private ProgressDialog progressDialog = new ProgressDialog(Home.this);
+        private ProgressDialog progressDialog = new ProgressDialog(getActivity());
 
 
         @Override
         protected void onPreExecute() {
-            this.progressDialog.setTitle("Open Package Manager");
-            this.progressDialog.setMessage("First Install, bootstrapping...");
-            this.progressDialog.setCancelable(false);
-            this.progressDialog.show();
+            progressDialog.setTitle("Open Package Manager");
+            progressDialog.setMessage("First Install, bootstrapping...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
             return;
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            BinaryInstaller installer = new BinaryInstaller(getApplicationContext());
+            BinaryInstaller installer = new BinaryInstaller(getActivity());
             installer.installResources();
             Log.d(DEBUG_TAG, "Installing binaries");
             // TODO: Write some test code to see if the binaries are placed correctly and have the right permissions!
@@ -116,16 +118,16 @@ public class Home extends ActionBarActivity {
     public class AsyncCommandExecutor extends AsyncTask<String, Void, Void> {
 
         public String returnOutput;
-        private ProgressDialog progressDialog = new ProgressDialog(Home.this);
+        private ProgressDialog progressDialog = new ProgressDialog(getActivity());
 
         @Override
         protected void onPreExecute() {
-            this.progressDialog.setTitle("OPM");
             this.progressDialog.setMessage("Running command.");
             this.progressDialog.setCancelable(false);
             this.progressDialog.show();
             return;
         }
+
         @Override
         protected Void doInBackground(String... params) {
             try {
@@ -142,6 +144,7 @@ public class Home extends ActionBarActivity {
 
             return null;
         }
+
         @Override
         protected void onPostExecute(Void result) {
             Home.scanResult.setText(returnOutput);

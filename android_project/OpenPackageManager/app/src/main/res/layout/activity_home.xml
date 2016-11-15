@@ -14,6 +14,9 @@
     <EditText
         android:id="@+id/flags_ET"
         android:layout_below="@+id/nmap_text"
+        android:textColor="@android:color/background_dark"
+        android:foregroundTint="@android:color/background_dark"
+        android:textColorHighlight="@android:color/background_dark"
         android:hint="Run command"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
@@ -27,6 +30,7 @@
         android:id="@+id/scan_output_TV"
         android:scrollbars="vertical"
         android:maxLines="1000"
+        android:textColor="@android:color/background_dark"
         android:layout_below="@+id/scan_BT"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
