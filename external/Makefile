@@ -64,7 +64,7 @@ compile:
 		-fpermissive \
 		-std=c++11 \
 		-o ../bins/opm \
-		update.cpp download.cpp install.cpp list.cpp opm.cpp search.cpp remove.cpp\
+		update.cpp download.cpp install.cpp list.cpp opm.cpp search.cpp upgrade.cpp remove.cpp\
 		-lcurl -lz && \
 	PATH=$(NDKDEST)/bin:$(PATH) $(PREFIXT)-strip ../bins/opm
 

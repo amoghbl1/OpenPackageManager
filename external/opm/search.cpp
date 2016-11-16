@@ -21,18 +21,20 @@ void search_pack(vector<string> pack_list)
     packageslist += "packages.list";
 	ifstream jsonFile(packageslist);
 	vector<string> names;
-	if (jsonFile.good()){
-		ptree pt;
-		read_json(jsonFile, pt);
-		for(auto & package_list:pt){
-			for(auto & package:package_list.second){
-				if (package.first  == "packagename"){
-					if (pack_list.size() == 0 || find(pack_list.begin(), pack_list.end(), package.second.get_value<string>()) != pack_list.end())
-						names.push_back(package.second.get_value<string>());
-				}
-			}
-		}
-	}
+    if (jsonFile.good()){
+        ptree pt;
+        read_json(jsonFile, pt);
+        for(auto & ppt:pt){
+            for(auto & package_list:ppt.second){
+                for(auto & package:package_list.second){
+                    if (package.first  == "packagename"){
+                        if (pack_list.size() == 0 || find(pack_list.begin(), pack_list.end(), package.second.get_value<string>()) != pack_list.end())
+                            names.push_back(package.second.get_value<string>());
+                    }
+                }
+            }
+        }
+    }
 	printf("Packages:\n");
 	for(int i = 0; i < names.size(); i++)
 	{
