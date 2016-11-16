@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -43,7 +42,7 @@ public class Home extends Fragment {
 
         mySharedPreferences = getActivity().getSharedPreferences(DEFAULT_SHARED_PREFERENCES, MODE_MULTI_PROCESS);
         firstInstall = mySharedPreferences.getBoolean(firstStartPref, true);
-        if(true) {
+        if(firstInstall) {
             new AsyncBinaryInstaller().execute();
         }
     }
@@ -57,7 +56,6 @@ public class Home extends Fragment {
         final EditText flags = (EditText)inflated.findViewById(R.id.flags_ET);
         scanResult = (TextView)inflated.findViewById(R.id.scan_output_TV);
 
-        scanResult.setMovementMethod(new ScrollingMovementMethod());
 
         scan.setOnClickListener(new View.OnClickListener() {
             @Override

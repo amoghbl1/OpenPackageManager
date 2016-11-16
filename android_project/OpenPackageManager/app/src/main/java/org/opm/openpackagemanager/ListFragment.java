@@ -4,9 +4,28 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -26,7 +45,11 @@ public class ListFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    public static View inflated;
+    private RecyclerView recyclerView;
+    static SwipeRefreshLayout mySwipeRefreshLayout;
+    private PackageAdapter adapter;
+    private List<Package> packageList;
     private OnFragmentInteractionListener mListener;
 
     public ListFragment() {
@@ -64,10 +87,88 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false);
+
+        inflated = inflater.inflate(R.layout.fragment_list, container, false);
+
+        recyclerView = (RecyclerView) inflated.findViewById(R.id.recycler_view);
+        final TextView notInstalled = (TextView)inflated.findViewById(R.id.not_installed);
+        packageList = new ArrayList<>();
+        adapter = new PackageAdapter(inflated.getContext(), packageList);
+        notInstalled.setVisibility(View.GONE);
+        mySwipeRefreshLayout = (SwipeRefreshLayout) inflated.findViewById(R.id.swiperefresh);
+        mySwipeRefreshLayout.setRefreshing(true);
+        LinearLayoutManager llm = new LinearLayoutManager(inflated.getContext());
+        recyclerView.setLayoutManager(llm);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+                mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        // This method performs the actual data-refresh operation.
+                        // The method calls setRefreshing(false) when it's finished.
+                        try {
+                            notInstalled.setVisibility(View.GONE);
+                            preparePackages();
+                        } catch (FileNotFoundException e) {
+                            notInstalled.setVisibility(View.VISIBLE);
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        finally {
+                            mySwipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                }
+        );
+
+
+        try {
+            preparePackages();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        finally {
+            mySwipeRefreshLayout.setRefreshing(false);
+        }
+        return inflated;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
+    private void preparePackages() throws FileNotFoundException, JSONException {
+        String file_name = "/data/data/org.opm.openpackagemanager/app_bin/installed.list";
+
+        FileInputStream fis = new FileInputStream(new File(file_name));
+        InputStreamReader isr = new InputStreamReader(fis);
+
+        BufferedReader bufferedReader = new BufferedReader(isr);
+        StringBuilder sb = new StringBuilder();
+        String line;
+        try {
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.d("DIR",sb.toString());
+
+        JSONObject reader = new JSONObject(sb.toString());
+        JSONArray installed = reader.getJSONArray("installed");
+        packageList.clear();
+        for (int i=0;i<installed.length();i++){
+            JSONObject arr_package = installed.getJSONObject(i);
+            Package a = new Package(arr_package.getString("packagename"), arr_package.getString("version"));
+            packageList.add(a);
+
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+        // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -83,6 +184,7 @@ public class ListFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
     }
 
     @Override

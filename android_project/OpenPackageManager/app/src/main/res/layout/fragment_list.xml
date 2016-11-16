@@ -3,11 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="org.opm.openpackagemanager.ListFragment">
-
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/not_installed"
+        android:text="No Packages installed"
+        android:textStyle="bold"
+        android:textSize="15sp"/>
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:scrollbars="vertical" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>
