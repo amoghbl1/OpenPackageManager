@@ -1,42 +1,29 @@
-[
+{
+	"fetched": [
+	{
+	"packagename": "apm",
+        "conflink": "https://raw.githubusercontent.com/kunal394/test/master/apm.conf",
+    	"version" : 1.0
+	},
 	{
 	"packagename": "apm1",
-        "conflink": "https://raw.githubusercontent.com/amoghbl1/OpenPackageManager/master/conf/apm1.conf",
+        "conflink": "https://raw.githubusercontent.com/kunal394/test/master/apm1.conf",
     	"version" : 1.0
 	},
 	{
 	"packagename": "apm2",
-    	"conflink": "www.apm.org/apm2.conf",
+        "conflink": "https://raw.githubusercontent.com/kunal394/test/master/apm2.conf",
     	"version" : 1.0
 	},
 	{
 	"packagename": "apm3",
-    	"conflink": "www.apm1.org/apm3.conf",
+        "conflink": "https://raw.githubusercontent.com/kunal394/test/master/apm3.conf",
     	"version" : 1.0
 	},
-	{
-	"packagename": "apm4",
-    	"conflink": "www.apm.org/apm4.conf",
-    	"version" : 1.0
-	},
-	{
-	"packagename": "apm5",
-    	"conflink": "www.apm.org/apm5.conf",
-    	"version" : 1.0
-	},
-	{
-	"packagename": "apm6",
-    	"conflink": "www.apm.org/apm6.conf",
-    	"version" : 1.0
-	},
-	{
-    	"packagename": "apm7",
-    	"conflink": "www.apm.org/apm7.conf",
-    	"version" : 1.0
-	},
-    {
-    	"packagename": "opm",
-        "conflink": "https://raw.githubusercontent.com/amoghbl1/OpenPackageManager/master/conf/opm.conf",
-        "version": 1.0    
-    }
-]
+    	{
+    	"packagename": "opm1",
+        "conflink": "https://raw.githubusercontent.com/kunal394/test/master/opm1.conf",
+        "version": 1.0
+	}
+    ]
+}
