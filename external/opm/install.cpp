@@ -173,7 +173,7 @@ int install_package_and_update(string pacname, char* confurl, string fname)
                 p_name = package.second.get_value<string>();
             else if(package.first == "dependencies"){
                 for(auto &x : package.second){
-                    dp.push_back(make_pair(x.first, stof(x.second.data())));
+                    dp.push_back(make_pair(x.first, atof((x.second.data()).c_str())));
                 }
             
             }

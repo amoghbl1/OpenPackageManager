@@ -35,7 +35,7 @@ void search_pack(vector<string> pack_list)
             }
         }
     }
-	printf("Packages:\n");
+	printf("Packages [%d]:\n", names.size());
 	for(int i = 0; i < names.size(); i++)
 	{
 		cout << names[i] << endl;

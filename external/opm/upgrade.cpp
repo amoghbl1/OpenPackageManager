@@ -25,7 +25,7 @@ void fillMap(ptree &root, map<string, pair<string, float> > &M, int ty=0)
                 if(z.first == "packagename")
                     name = z.second.data();
                 else if(z.first == check[ty]) link = z.second.data();
-                else if(z.first == "version") ver = stof(z.second.data());
+                else if(z.first == "version") ver = atof((z.second.data()).c_str());
             }
             M[name] = make_pair(link, ver);
         }
