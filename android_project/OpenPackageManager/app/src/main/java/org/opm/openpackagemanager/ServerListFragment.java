@@ -159,11 +159,11 @@ public class ServerListFragment extends Fragment {
         }
         Log.d("DIR",sb.toString());
 
-        JSONArray packages = new JSONArray(sb.toString());
+        JSONArray packages = new JSONObject(sb.toString()).getJSONArray("fetched");
         packageList.clear();
         for (int i=0;i<packages.length();i++){
             JSONObject arr_package = packages.getJSONObject(i);
-            Package a = new Package(arr_package.getString("packagename"), arr_package.getString("version"));
+            Package a = new Package(arr_package.getString("packagename"), arr_package.getString("version"), false);
             packageList.add(a);
 
         }

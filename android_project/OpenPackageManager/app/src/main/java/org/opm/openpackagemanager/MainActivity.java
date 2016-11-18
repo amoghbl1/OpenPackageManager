@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity  implements ListFragment.OnF
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                viewPager.setCurrentItem(tab.getPosition());
             }
         });
     }

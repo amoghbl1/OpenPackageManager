@@ -1,6 +1,7 @@
 package org.opm.openpackagemanager;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -50,8 +51,12 @@ public class PackageAdapter extends RecyclerView.Adapter<PackageAdapter.MyViewHo
         Package album = packageList.get(position);
         holder.title.setText(album.getName());
         holder.version.setText("Version: " + album.getVersion());
-
-
+        if (album.getUpdateAvailable()){
+            holder.version.setTextColor(Color.parseColor("#00BFA5"));
+        }
+        else{
+                holder.version.setTextColor(Color.DKGRAY);
+        }
     }
 
     @Override

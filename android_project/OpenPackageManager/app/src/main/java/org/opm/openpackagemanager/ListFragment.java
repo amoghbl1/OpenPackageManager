@@ -49,7 +49,7 @@ public class ListFragment extends Fragment {
     private RecyclerView recyclerView;
     static SwipeRefreshLayout mySwipeRefreshLayout;
     private PackageAdapter adapter;
-    private List<Package> packageList;
+    private List<Package> packageList, packageListUpdate;
     private OnFragmentInteractionListener mListener;
 
     public ListFragment() {
@@ -93,7 +93,8 @@ public class ListFragment extends Fragment {
         recyclerView = (RecyclerView) inflated.findViewById(R.id.recycler_view);
         final TextView notInstalled = (TextView)inflated.findViewById(R.id.not_installed);
         packageList = new ArrayList<>();
-        adapter = new PackageAdapter(inflated.getContext(), packageList);
+        packageListUpdate = new ArrayList<>();
+        adapter = new PackageAdapter(inflated.getContext(), packageListUpdate);
         notInstalled.setVisibility(View.GONE);
         mySwipeRefreshLayout = (SwipeRefreshLayout) inflated.findViewById(R.id.swiperefresh);
         mySwipeRefreshLayout.setRefreshing(true);
@@ -110,6 +111,7 @@ public class ListFragment extends Fragment {
                         try {
                             notInstalled.setVisibility(View.GONE);
                             preparePackages();
+                            prepareServerUpdates();
                         } catch (FileNotFoundException e) {
                             notInstalled.setVisibility(View.VISIBLE);
                             e.printStackTrace();
@@ -126,6 +128,7 @@ public class ListFragment extends Fragment {
 
         try {
             preparePackages();
+            prepareServerUpdates();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -161,9 +164,49 @@ public class ListFragment extends Fragment {
         packageList.clear();
         for (int i=0;i<installed.length();i++){
             JSONObject arr_package = installed.getJSONObject(i);
-            Package a = new Package(arr_package.getString("packagename"), arr_package.getString("version"));
+            Package a = new Package(arr_package.getString("packagename"), arr_package.getString("version"), false);
             packageList.add(a);
 
+        }
+    }
+
+
+    private void prepareServerUpdates() throws FileNotFoundException, JSONException {
+        String file_name = "/data/data/org.opm.openpackagemanager/app_bin/packages.list";
+
+        FileInputStream fis = new FileInputStream(new File(file_name));
+        InputStreamReader isr = new InputStreamReader(fis);
+
+        BufferedReader bufferedReader = new BufferedReader(isr);
+        StringBuilder sb = new StringBuilder();
+        String line;
+        try {
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Log.d("DIR",sb.toString());
+        List<String> pkg_names = new ArrayList<String>();
+        for(int i=0; i<packageList.size();i++){
+            pkg_names.add(packageList.get(i).getName());
+        }
+        JSONArray packages = new JSONObject(sb.toString()).getJSONArray("fetched");
+//        for(int i=0; i<packages.length();i++){
+//            pkg_names.add(arr_package.getString("packagename"));
+//        }
+        packageListUpdate.clear();
+        for (int i=0;i<packages.length();i++){
+                JSONObject arr_package = packages.getJSONObject(i);
+                int index = pkg_names.indexOf(arr_package.getString("packagename"));
+                if (index >= 0) {
+                    if (packageList.get(index).getVersion().compareTo(arr_package.getString("version")) < 0) {
+                        packageListUpdate.add(new Package(packageList.get(index).getName(), packageList.get(index).getVersion(), true));
+                    } else {
+                        packageListUpdate.add(new Package(packageList.get(index).getName(), packageList.get(index).getVersion(), false));
+                    }
+                }
         }
         adapter.notifyDataSetChanged();
     }
@@ -184,6 +227,7 @@ public class ListFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
 
     }
 
