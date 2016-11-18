@@ -27,7 +27,7 @@ void list_pack(vector<string> pack_list)
 			}
 		}
 	}
-	printf("Packages:\n");
+    cout << "Packages [" << names.size() <<  "]:" << endl;
 	for(int i = 0; i < names.size(); i++)
 	{
 		cout << names[i] << endl;

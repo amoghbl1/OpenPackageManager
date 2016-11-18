@@ -35,8 +35,10 @@ std::string exec(const char* cmd) {
     return result;
 }
 
-int download(char *url, string path)
+int download(char *url, string path, bool verbose = 0)
 {
+    string u(url);
+    if(verbose) cout << "Downloading " << path << " from url: " << u << endl;
 	CURL *curl;
 	FILE *outfile;
 	CURLcode res;
@@ -60,7 +62,9 @@ int download(char *url, string path)
 	ifstream f(outfilenamechararr);
 	if (f.good()) {
         exec(execcommand.c_str());
+        if(verbose) cout << "Download successful" << endl;
 		return 1;
     }
+    if(verbose) cout << "Download failed" << endl;
 	return -1;
 }

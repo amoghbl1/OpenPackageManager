@@ -12,9 +12,13 @@ void search_pack(vector<string> pack_list)
 {
 	//update the packages.list file
 	string s = PACKAGES_LIST_URL;
-	char* s_copy = (char*)alloca(s.size() + 1);
-	memcpy(s_copy, s.c_str(), s.size() + 1);
-	update(s_copy);
+    char* s_copy = (char*)alloca(s.size() + 1);
+    memcpy(s_copy, s.c_str(), s.size() + 1);
+    int pack_stat = update(s_copy);                                        
+    if(pack_stat == -1){                                                   
+        cout << "Error: Packages.list download failed!!" << endl;          
+        return;                                                            
+    }  
 
 	stringstream ss;
     string packageslist = APP_BIN_PATH;
@@ -35,7 +39,7 @@ void search_pack(vector<string> pack_list)
             }
         }
     }
-	printf("Packages [%d]:\n", names.size());
+    cout << "Packages [" << names.size() <<  "]:" << endl;
 	for(int i = 0; i < names.size(); i++)
 	{
 		cout << names[i] << endl;

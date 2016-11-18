@@ -3,6 +3,8 @@
 #include "list.hpp"
 #include "search.hpp"
 #include "remove.hpp"
+#include "upgrade.hpp"
+#include "download.hpp"
 
 using namespace std;
 
@@ -22,8 +24,14 @@ void _remove_help(bool e)
 
 void _upgrade_help(bool e)
 {
-	printf("Upgrade a package:\n\t./opm updgrade packagename\n");
-	printf("Upgrade all packages:\n\t./opm updgrade all\n");
+	printf("Upgrade all packages:\n\t./opm upgrade\n");
+	if(e) exit(1);
+}
+
+void _download_help(bool e)
+{
+	printf("Extended Functionality\n");
+	printf("Download a file:\n\t./opm upgrade <file_url> <filename>\n");
 	if(e) exit(1);
 }
 
@@ -79,6 +87,15 @@ int main(int argc, char *argv[])
 		}
 		install(argv[2]);
 	}
+    else if(!comm.compare("down"))
+	{
+		if(argc < 4)
+		{
+			_download_help(true);
+		}
+        string s(argv[3]);
+		download(argv[2], s, true);
+	}
 	else if(!comm.compare("remove"))
 	{
 		if((argc == 2) || (argc > 3))
@@ -90,12 +107,12 @@ int main(int argc, char *argv[])
 	}
 	else if(!comm.compare("upgrade"))
 	{
-		if((argc == 2) || (argc > 3))
+		if(argc > 2)
 		{
 			suggest();
 			_upgrade_help(true);
 		}
-		//upgrade(argv[2]);
+		upgrade("all");
 	}
 	else if(!comm.compare("list"))
 	{
