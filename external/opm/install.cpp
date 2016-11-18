@@ -55,6 +55,7 @@ bool check_installed(char *pname)
 void update_local(string pname, string binlink, string version)
 {
 
+    cout << "Successfully installed " << pname << endl;
     string installedlist = APP_BIN_PATH;
     installedlist += "installed.list";
 	ifstream jsonFile(installedlist);
@@ -129,6 +130,7 @@ string fetchconfurl(char *pname)
 
 int install_package_and_update(string pacname, char* confurl, string fname)
 {
+    cout << "Installing package: " << pacname << endl;
     if(download(confurl, fname) == -1)
     {
         rm(fname);
@@ -173,12 +175,12 @@ int install_package_and_update(string pacname, char* confurl, string fname)
                 p_name = package.second.get_value<string>();
             else if(package.first == "dependencies"){
                 for(auto &x : package.second){
-                    dp.push_back(make_pair(x.first, stof(x.second.data())));
+                    dp.push_back(make_pair(x.first, atof((x.second.data()).c_str())));
                 }
             
             }
         }
-    cout << "dependencies: "<<endl;
+    if(dp.size() > 0) cout << "Dependencies: "<< endl;
     for(auto &x:dp){
         cout << x.first << ": " << x.second << endl;
         string s = x.first;
@@ -218,7 +220,7 @@ int install(char *packname)
         printf("Could not locate requested package. Installation failed\n");
         exit(0);
     }
-    cout << "conflink: " << confurl << endl;
+    //cout << "conflink: " << confurl << endl;
 
     //download the conf file
     s_copy = (char*)alloca(confurl.size() + 1);
